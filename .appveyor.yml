@@ -3,7 +3,7 @@ environment:
   CYGWIN_MIRROR: http://cygwin.mirror.constant.com
   matrix:
   - CONFIG: cygwin
-  - CONFIG: cygwin64
+#  - CONFIG: cygwin64
 
 install:
 - cmd: if [%CONFIG%]==[cygwin] (
@@ -14,6 +14,7 @@ install:
 build_script:
 - cmd: SET PATH=c:/%CONFIG%/bin
 - cmd: C:\%CONFIG%\bin\bash -e -l -c "cd $APPVEYOR_BUILD_FOLDER && autoreconf -sif && ./configure --prefix=$HOME && make LDFLAGS='-lintl' && make install"
+- cmd: C:\%CONFIG%\bin\bash -e -l -c "touch $HOME/ro ; chmod a-w $HOME/ro ; ls -l $HOME/ro ; echo foo >$HOME/ro; ls -l $HOME/ro"
 
 test_script:
 - cmd: C:\%CONFIG%\bin\bash -e -l -c "cd $APPVEYOR_BUILD_FOLDER && make check"
